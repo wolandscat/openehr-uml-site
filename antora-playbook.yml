@@ -1,0 +1,45 @@
+site:
+  title: openEHR UML
+  url: https://uml.openEHR.org
+  start_page: openehr-doc::index.adoc
+  robots: allow
+
+content:
+  edit_url: ~
+  sources:
+  - url: ../openehr-doc
+    branches: main
+
+asciidoc:
+  extensions:
+  - '@asciidoctor/tabs'
+  - asciidoctor-kroki
+  attributes:
+    kroki-fetch-diagram: true
+    kroki-http-method: adaptive
+    kroki-server-url: http://localhost:8000
+    source-highlighter: shiki
+
+urls:
+  latest_version_segment: latest
+
+antora:
+  extensions:
+    - require: 'antora-shiki-extension'
+      register_languages:       # default: []
+        - id: 'bmml'
+          scope_name: 'source.bmml'
+          grammar_path: ./tools/grammars/bmml.tmLanguage.json
+      theme: light-plus
+
+ui:
+  bundle:
+    url: https://gitlab.com/antora/antora-ui-default/-/jobs/artifacts/HEAD/raw/build/ui-bundle.zip?job=bundle-stable
+    snapshot: true
+  supplemental_files: ./supplemental-ui
+
+runtime:
+  fetch: true
+
+output:
+  dir: ./build/site

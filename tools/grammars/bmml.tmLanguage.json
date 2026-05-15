@@ -1,0 +1,414 @@
+{
+    "name": "bmml",
+    "scopeName": "source.bmml",
+    "patterns": [
+        {
+            "include": "#import"
+        },
+        {
+            "include": "#code"
+        }
+    ],
+    "fileTypes": [
+        "bmml"
+    ],
+    "repository": {
+        "import": {
+            "begin": "\\b(import)\\b\\s*",
+            "beginCaptures": {
+                "1": {
+                    "name": "keyword.soft.bmml"
+                }
+            },
+            "end": ";|$",
+            "name": "meta.import.bmml",
+            "contentName": "entity.name.package.bmml",
+            "patterns": [
+                {
+                    "include": "#comments"
+                },
+                {
+                    "include": "#hard-keywords"
+                },
+                {
+                    "match": "\\*",
+                    "name": "variable.language.wildcard.bmml"
+                }
+            ]
+        },
+        "code": {
+            "patterns": [
+                {
+                    "include": "#comments"
+                },
+                {
+                    "include": "#keywords"
+                },
+                {
+                    "include": "#class-declaration"
+                },
+                {
+                    "include": "#object-declaration"
+                },
+                {
+                    "include": "#feature-declaration"
+                },
+                {
+                    "include": "#variable-declaration"
+                },
+                {
+                    "include": "#type-constraint"
+                },
+                {
+                    "include": "#type-annotation"
+                },
+                {
+                    "include": "#function-call"
+                },
+                {
+                    "include": "#method-reference"
+                },
+                {
+                    "include": "#key"
+                },
+                {
+                    "include": "#string"
+                },
+                {
+                    "include": "#string-empty"
+                },
+                {
+                    "include": "#string-multiline"
+                },
+                {
+                    "include": "#character"
+                },
+                {
+                    "include": "#lambda-arrow"
+                },
+                {
+                    "include": "#operators"
+                },
+                {
+                    "include": "#self-reference"
+                },
+                {
+                    "include": "#decimal-literal"
+                },
+                {
+                    "include": "#hex-literal"
+                },
+                {
+                    "include": "#binary-literal"
+                },
+                {
+                    "include": "#boolean-literal"
+                },
+                {
+                    "include": "#null-literal"
+                }
+            ]
+        },
+        "comments": {
+            "patterns": [
+                {
+                    "include": "#comment-block"
+                }
+            ]
+        },
+        "comment-block": {
+            "begin": "\\|\\n\\| ",
+            "match": "^\\s*\\|.*$",
+            "end": "\\|\\n",
+            "name": "comment.block.bmml"
+        },
+        "keywords": {
+            "patterns": [
+                {
+                    "include": "#prefix-modifiers"
+                },
+                {
+                    "include": "#hard-keywords"
+                },
+                {
+                    "include": "#soft-keywords"
+                },
+                {
+                    "include": "#control-keywords"
+                }
+            ]
+        },
+        "prefix-modifiers": {
+            "match": "\\b(abstract|builtin|enum|override|lateinit|operator|infix|const)\\b",
+            "name": "storage.modifier.other.bmml"
+        },
+        "hard-keywords": {
+            "match": "\\b(is_a|do|alias|feature_group|end|pre_cond|post_cond|invariant)\\b",
+            "name": "keyword.hard.bmml"
+        },
+        "soft-keywords": {
+            "match": "\\b(Result|Self)\\b",
+            "name": "keyword.soft.bmml"
+        },
+        "control-keywords": {
+            "match": "\\b(case|when|for|in)\\b",
+            "name": "keyword.control.bmml"
+        },
+        "class-declaration": {
+            "match": "\\b(class|(?:func\\s+)?interface)\\s+(\\b\\w+\\b|`[^`]+`)\\s*(?<GROUP><([^<>]|\\g<GROUP>)+>)?",
+            "captures": {
+                "1": {
+                    "name": "keyword.hard.class.bmml"
+                },
+                "2": {
+                    "name": "entity.name.type.class.bmml"
+                },
+                "3": {
+                    "patterns": [
+                        {
+                            "include": "#type-parameter"
+                        }
+                    ]
+                }
+            }
+        },
+        "object-declaration": {
+            "match": "\\b(object)(?:\\s+(\\b\\w+\\b|`[^`]+`))?",
+            "captures": {
+                "1": {
+                    "name": "keyword.hard.object.bmml"
+                },
+                "2": {
+                    "name": "entity.name.type.object.bmml"
+                }
+            }
+        },
+        "feature-declaration": {
+            "match": "\\b(func|proc)\\b\\s*(?<GROUP><([^<>]|\\g<GROUP>)+>)?\\s*(?:(?:(\\w+)\\.)?(\\b\\w+\\b|`[^`]+`))?",
+            "captures": {
+                "1": {
+                    "name": "keyword.hard.func.bmml"
+                },
+                "2": {
+                    "patterns": [
+                        {
+                            "include": "#type-parameter"
+                        }
+                    ]
+                },
+                "4": {
+                    "name": "entity.name.type.class.extension.bmml"
+                },
+                "5": {
+                    "name": "entity.name.feature.declaration.bmml"
+                }
+            }
+        },
+        "variable-declaration": {
+            "match": "\\b(const|prop|assoc|singleton)\\b\\s*(?<GROUP><([^<>]|\\g<GROUP>)+>)?",
+            "captures": {
+                "1": {
+                    "name": "keyword.hard.bmml"
+                },
+                "2": {
+                    "patterns": [
+                        {
+                            "include": "#type-parameter"
+                        }
+                    ]
+                }
+            }
+        },
+        "type-parameter": {
+            "patterns": [
+                {
+                    "match": "\\b\\w+\\b",
+                    "name": "entity.name.type.bmml"
+                },
+                {
+                    "match": "\\b(in|out)\\b",
+                    "name": "storage.modifier.bmml"
+                }
+            ]
+        },
+        "type-annotation": {
+            "match": "(?<![:?]):\\s*(\\w|\\?|\\s|->|(?<GROUP>[<(]([^<>()\"']|\\g<GROUP>)+[)>]))+",
+            "captures": {
+                "0": {
+                    "patterns": [
+                        {
+                            "include": "#type-parameter"
+                        }
+                    ]
+                }
+            }
+        },
+        "function-call": {
+            "match": "\\??\\.?(\\b\\w+\\b|`[^`]+`)\\s*(?<GROUP><([^<>]|\\g<GROUP>)+>)?\\s*(?=[({])",
+            "captures": {
+                "1": {
+                    "name": "entity.name.function.call.bmml"
+                },
+                "2": {
+                    "patterns": [
+                        {
+                            "include": "#type-parameter"
+                        }
+                    ]
+                }
+            }
+        },
+        "method-reference": {
+            "match": "\\??::(\\b\\w+\\b|`[^`]+`)",
+            "captures": {
+                "1": {
+                    "name": "entity.name.function.reference.bmml"
+                }
+            }
+        },
+        "key": {
+            "match": "\\b(\\w=)\\s*(=)",
+            "captures": {
+                "1": {
+                    "name": "variable.parameter.bmml"
+                },
+                "2": {
+                    "name": "keyword.operator.assignment.bmml"
+                }
+            }
+        },
+        "string-empty": {
+            "match": "(?<!\")\"\"(?!\")",
+            "name": "string.quoted.double.bmml"
+        },
+        "string": {
+            "begin": "(?<!\")\"(?!\")",
+            "end": "\"",
+            "name": "string.quoted.double.bmml",
+            "patterns": [
+                {
+                    "match": "\\\\.",
+                    "name": "constant.character.escape.bmml"
+                },
+                {
+                    "include": "#string-escape-simple"
+                },
+                {
+                    "include": "#string-escape-bracketed"
+                }
+            ]
+        },
+        "string-multiline": {
+            "begin": "\"\"\"",
+            "end": "\"\"\"",
+            "name": "string.quoted.double.bmml",
+            "patterns": [
+                {
+                    "match": "\\\\.",
+                    "name": "constant.character.escape.bmml"
+                },
+                {
+                    "include": "#string-escape-simple"
+                },
+                {
+                    "include": "#string-escape-bracketed"
+                }
+            ]
+        },
+        "string-escape-simple": {
+            "match": "(?<!\\\\)\\$\\w+\\b",
+            "name": "variable.string-escape.bmml"
+        },
+        "string-escape-bracketed": {
+            "begin": "(?<!\\\\)(\\$\\{)",
+            "end": "(\\})",
+            "name": "meta.template.expression.bmml",
+            "beginCaptures": {
+                "1": {
+                    "name": "punctuation.definition.template-expression.begin"
+                }
+            },
+            "endCaptures": {
+                "1": {
+                    "name": "punctuation.definition.template-expression.end"
+                }
+            },
+            "patterns": [
+                {
+                    "include": "#code"
+                }
+            ]
+        },
+        "character": {
+            "begin": "'",
+            "end": "'",
+            "name": "string.quoted.single.bmml",
+            "patterns": [
+                {
+                    "match": "\\\\.",
+                    "name": "constant.character.escape.bmml"
+                }
+            ]
+        },
+        "decimal-literal": {
+            "match": "\\b\\d[\\d_]*(\\.[\\d_]+)?((e|E)\\d+)?(u|U)?(L|F|f)?\\b",
+            "name": "constant.numeric.decimal.bmml"
+        },
+        "hex-literal": {
+            "match": "0(x|X)[A-Fa-f0-9][A-Fa-f0-9_]*(u|U)?",
+            "name": "constant.numeric.hex.bmml"
+        },
+        "binary-literal": {
+            "match": "0(b|B)[01][01_]*",
+            "name": "constant.numeric.binary.bmml"
+        },
+        "boolean-literal": {
+            "match": "\\b(true|false)\\b",
+            "name": "constant.language.boolean.bmml"
+        },
+        "null-literal": {
+            "match": "\\bnull\\b",
+            "name": "constant.language.null.bmml"
+        },
+        "lambda-arrow": {
+            "match": "->",
+            "name": "storage.type.function.arrow.bmml"
+        },
+        "operators": {
+            "patterns": [
+                {
+                    "match": "(=|<=|>=|<|>|≤|≥|≠)",
+                    "name": "keyword.operator.comparison.bmml"
+                },
+                {
+                    "match": "([+*/%-]=)",
+                    "name": "keyword.operator.assignment.arithmetic.bmml"
+                },
+                {
+                    "match": "(:=)",
+                    "name": "keyword.operator.assignment.bmml"
+                },
+                {
+                    "match": "([+*/%^±-])",
+                    "name": "keyword.operator.arithmetic.bmml"
+                },
+                {
+                    "match": "(¬|⊻|∨|⇒|∧|∀|∃|∈|⇔)",
+                    "name": "keyword.operator.logical.bmml"
+                },
+                {
+                    "match": "(--|\\+\\+)",
+                    "name": "keyword.operator.increment-decrement.bmml"
+                },
+                {
+                    "match": "(\\.\\.)",
+                    "name": "keyword.operator.range.bmml"
+                }
+            ]
+        },
+        "self-reference": {
+            "match": "\\b(this|super)(@\\w+)?\\b",
+            "name": "variable.language.this.bmml"
+        }
+    }
+}

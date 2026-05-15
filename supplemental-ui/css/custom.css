@@ -1,0 +1,18 @@
+/*! Custom CSS for SPLASH (c) 2026 Thomas Beale */
+
+article.doc h1 {
+  font-size: 1.5rem;
+}
+
+table.tableblock, th.tableblock, td.tableblock { border: 0 solid #dedede; }
+
+th.tableblock { background-color: #bbdded; font-family: "Helvetica", "Arial", sans-serif; }
+
+/* coloured cell that is not a header cell */
+td.classattrs {
+  background-color: #d2edfa;
+}
+
+.paragraph-alert {
+  color: #c0392b;
+}
